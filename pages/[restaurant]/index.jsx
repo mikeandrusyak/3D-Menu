@@ -13,6 +13,8 @@ export default function RestaurantMenu() {
   const [restaurantName, setRestaurantName] = useState('');
   const [restaurantPhoto, setRestaurantPhoto] = useState('');
   const [currency, setCurrency] = useState('');
+  const [filters, setFilters] = useState([]); // список фільтрів
+  const [selectedFilters, setSelectedFilters] = useState([]); // id вибраних фільтрів
 
   useEffect(() => {
     if (!restaurant) return;
@@ -33,6 +35,14 @@ export default function RestaurantMenu() {
         if (!dishesRes.ok) throw new Error('Failed to fetch dishes');
         const dishesData = await dishesRes.json();
         setDishes(dishesData);
+        // 3. Get filters for this restaurant
+        const filtersRes = await fetch(`/api/filters?restaurant_id=${rest.id}`);
+        if (filtersRes.ok) {
+          const filtersData = await filtersRes.json();
+          setFilters(filtersData);
+        } else {
+          setFilters([]);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -42,6 +52,25 @@ export default function RestaurantMenu() {
 
     fetchDishesBySlug();
   }, [restaurant]);
+
+  // Фільтрація страв за вибраними фільтрами
+  const filteredDishes = selectedFilters.length === 0
+    ? dishes
+    : dishes.filter(dish => {
+        if (!dish.filters || !Array.isArray(dish.filters)) return false;
+        // Має містити всі вибрані фільтри
+        return selectedFilters.every(fId => dish.filters.includes(fId));
+      });
+
+  // Обробка вибору фільтра
+  const toggleFilter = (filterId) => {
+    setSelectedFilters(prev =>
+      prev.includes(filterId)
+        ? prev.filter(id => id !== filterId)
+        : [...prev, filterId]
+    );
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -83,7 +112,26 @@ export default function RestaurantMenu() {
           </div>
         </div>
 
-        {dishes.length === 0 ? (
+        {/* UI фільтрів */}
+        {filters.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6 justify-center">
+            {filters.map(filter => (
+              <button
+                key={filter.id}
+                className={`px-4 py-2 rounded-full border font-medium transition-colors text-sm
+                  ${selectedFilters.includes(filter.id)
+                    ? 'bg-brand-orange text-white border-brand-orange'
+                    : 'bg-white text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'}`}
+                onClick={() => toggleFilter(filter.id)}
+                type="button"
+              >
+                {filter.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {filteredDishes.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">🍽️</div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">No dishes found</h2>
@@ -91,7 +139,7 @@ export default function RestaurantMenu() {
           </div>
         ) : (
           <div className="space-y-4">
-            {dishes.map((dish) => (
+            {filteredDishes.map((dish) => (
               <DishCard key={dish.id} dish={dish} currency={currency} />
             ))}
           </div>

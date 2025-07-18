@@ -15,6 +15,7 @@ export default async function handler(req, res) {
           });
         }
 
+        // 1. Отримати всі страви ресторану
         const { data: dishes, error: getError } = await supabase
           .from('dishes')
           .select('*')
@@ -26,7 +27,30 @@ export default async function handler(req, res) {
           return res.status(500).json({ error: 'Failed to fetch dishes' });
         }
 
-        return res.status(200).json(dishes);
+        if (!dishes || dishes.length === 0) {
+          return res.status(200).json([]);
+        }
+
+        // 2. Отримати всі dish_filters для цих страв
+        const dishIds = dishes.map(d => d.id);
+        const { data: dishFilters, error: dishFiltersError } = await supabase
+          .from('dish_filters')
+          .select('dish_id, filter_id')
+          .in('dish_id', dishIds);
+
+        if (dishFiltersError) {
+          return res.status(500).json({ error: dishFiltersError.message });
+        }
+
+        // 3. Додаємо масив filters до кожної страви
+        const dishesWithFilters = dishes.map(dish => ({
+          ...dish,
+          filters: dishFilters
+            .filter(df => df.dish_id === dish.id)
+            .map(df => df.filter_id),
+        }));
+
+        return res.status(200).json(dishesWithFilters);
 
       case 'POST':
         // Add a new dish to a restaurant
