@@ -14,7 +14,7 @@ export default function Layout({ children }) {
         </main>
         <footer className="bg-white border-t mt-auto">
           <div className="max-w-screen-sm mx-auto px-4 py-4 text-center">
-            <small className="text-gray-500">© 2024 3D-Menu</small>
+            <small className="text-gray-500">© 2025 3D-Menu</small>
           </div>
         </footer>
       </div>
