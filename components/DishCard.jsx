@@ -1,21 +1,23 @@
 import Link from 'next/link';
+// ...existing code...
 
-export default function DishCard({ dish }) {
+export default function DishCard({ dish, currency }) {
+  console.log(dish);
+  console.log('currency:', currency);
   return (
     <div className="bg-white rounded-xl shadow-md p-4 transition-transform hover:scale-105 active:scale-95">
       <div className="flex flex-col sm:flex-row gap-4">
+        
         {/* Image */}
         <div className="flex-shrink-0">
           <img
-            src={dish.photo_url || '/placeholder-dish.jpg'}
+            src={dish.photo_url || "/placeholder-dish.jpg"}
             alt={dish.name}
+            width={96}
+            height={96}
             className="w-full sm:w-24 h-32 sm:h-24 object-cover rounded-lg"
-            onError={(e) => {
-              e.target.src = '/placeholder-dish.jpg';
-            }}
           />
         </div>
-        
         {/* Content */}
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-gray-900 text-lg mb-1 truncate">
@@ -26,7 +28,7 @@ export default function DishCard({ dish }) {
           </p>
           <div className="flex items-center justify-between">
             <span className="font-bold text-green-600 text-lg">
-              ${dish.price.toFixed(2)}
+              {dish.price.toFixed(2)} {currency ? currency : ''}
             </span>
             <Link
               href={`/restaurant/${dish.restaurant_id}/dish/${dish.id}`}
@@ -39,4 +41,4 @@ export default function DishCard({ dish }) {
       </div>
     </div>
   );
-} 
+}

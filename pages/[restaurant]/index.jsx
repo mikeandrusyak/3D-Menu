@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import DishCard from '../../components/DishCard';
+import Image from 'next/image';
 
 export default function RestaurantMenu() {
   const router = useRouter();
@@ -10,6 +11,8 @@ export default function RestaurantMenu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [restaurantName, setRestaurantName] = useState('');
+  const [restaurantPhoto, setRestaurantPhoto] = useState('');
+  const [currency, setCurrency] = useState('');
 
   useEffect(() => {
     if (!restaurant) return;
@@ -23,6 +26,8 @@ export default function RestaurantMenu() {
         const rest = await res.json();
         if (!rest || !rest.id) throw new Error('Restaurant not found');
         setRestaurantName(rest.name);
+        setRestaurantPhoto(rest.restaurant_photo);
+        setCurrency(rest.currency);
         // 2. Get dishes by restaurant_id
         const dishesRes = await fetch(`/api/dishes?restaurant_id=${rest.id}`);
         if (!dishesRes.ok) throw new Error('Failed to fetch dishes');
@@ -37,7 +42,6 @@ export default function RestaurantMenu() {
 
     fetchDishesBySlug();
   }, [restaurant]);
-
   if (loading) {
     return (
       <Layout>
@@ -72,8 +76,11 @@ export default function RestaurantMenu() {
     <Layout>
       <div className="max-w-screen-sm mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{restaurantName || 'Restaurant Menu'}</h1>
-          <p className="text-gray-600">Discover our delicious dishes</p>
+          <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">{restaurantName || 'Restaurant Menu'}</h1>
+          {/* Hero Image */}
+          <div className="w-full h-auto overflow-hidden mb-4">
+            <Image src={restaurantPhoto || "/hero-restaurant.jpg"} alt="Restaurant photo" width={400} height={200} className="w-full object-cover" />
+          </div>
         </div>
 
         {dishes.length === 0 ? (
@@ -85,11 +92,11 @@ export default function RestaurantMenu() {
         ) : (
           <div className="space-y-4">
             {dishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} />
+              <DishCard key={dish.id} dish={dish} currency={currency} />
             ))}
           </div>
         )}
       </div>
     </Layout>
   );
-} 
+}
