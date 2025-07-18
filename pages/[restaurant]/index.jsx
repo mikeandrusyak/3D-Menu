@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import DishCard from '../../components/DishCard';
@@ -15,6 +15,7 @@ export default function RestaurantMenu() {
   const [currency, setCurrency] = useState('');
   const [filters, setFilters] = useState([]); // список фільтрів
   const [selectedFilters, setSelectedFilters] = useState([]); // id вибраних фільтрів
+  const filterRefs = useRef({});
 
   useEffect(() => {
     if (!restaurant) return;
@@ -69,6 +70,10 @@ export default function RestaurantMenu() {
         ? prev.filter(id => id !== filterId)
         : [...prev, filterId]
     );
+    // scrollIntoView для кнопки
+    if (filterRefs.current[filterId]) {
+      filterRefs.current[filterId].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
   };
 
   if (loading) {
@@ -114,20 +119,23 @@ export default function RestaurantMenu() {
 
         {/* UI фільтрів */}
         {filters.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-6 justify-center">
-            {filters.map(filter => (
-              <button
-                key={filter.id}
-                className={`px-4 py-2 rounded-full border font-medium transition-colors text-sm
-                  ${selectedFilters.includes(filter.id)
-                    ? 'bg-brand-orange text-white border-brand-orange'
-                    : 'bg-white text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'}`}
-                onClick={() => toggleFilter(filter.id)}
-                type="button"
-              >
-                {filter.name}
-              </button>
-            ))}
+          <div className="sticky top-0 z-10 bg-white shadow-sm mb-6 -mx-4 px-4">
+            <div className="flex gap-2 overflow-x-auto scrollbar-none py-2 whitespace-nowrap">
+              {filters.map(filter => (
+                <button
+                  key={filter.id}
+                  ref={el => filterRefs.current[filter.id] = el}
+                  className={`px-4 py-2 rounded-full border font-medium transition-colors text-sm whitespace-nowrap
+                    ${selectedFilters.includes(filter.id)
+                      ? 'bg-orange-100 text-brand-orange border-brand-orange'
+                      : 'bg-white text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'}`}
+                  onClick={() => toggleFilter(filter.id)}
+                  type="button"
+                >
+                  {filter.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
