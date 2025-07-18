@@ -11,8 +11,8 @@ export default function Home() {
             <Image src="/icons/logo.jpg" alt="AR Menu Logo" width={56} height={56} className="rounded-full" />
           </div>
           <div className="space-x-2">
-            <button className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">About us</button>
-            <button className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Contact</button>
+            <a href="#demo menu" className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Demo Menu</a>
+            <a href="#contacts" className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Contact</a>
           </div>
         </header>
 
@@ -105,7 +105,7 @@ export default function Home() {
         </section>
 
         {/* Contacts */}
-        <section>
+        <section id="contacts">
           <div className="text-orange-500 text-3xl font-oleo text-center m-2">Contacts</div>
           <div className="bg-brand-orange p-6 mb-0 shadow-lg space-y-2 text-black">
             <div className="flex items-center gap-2"><span className="text-orange-500">📱</span>+41 79 602 23 48</div>
