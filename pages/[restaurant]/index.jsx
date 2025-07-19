@@ -108,9 +108,9 @@ export default function RestaurantMenu() {
 
   return (
     <Layout>
-      <div className="max-w-screen-sm mx-auto px-4 py-8">
+      <div className="max-w-screen-sm mx-auto py-8">
         <div className="mb-8">
-          <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">{restaurantName || 'Restaurant Menu'}</h1>
+          <h1 className="text-3xl text-center font-bold text-gray-900 m-2">{restaurantName || 'Restaurant Menu'}</h1>
           {/* Hero Image */}
           <div className="w-full h-auto overflow-hidden mb-4">
             <Image src={restaurantPhoto || "/hero-restaurant.jpg"} alt="Restaurant photo" width={400} height={200} className="w-full object-cover" />
