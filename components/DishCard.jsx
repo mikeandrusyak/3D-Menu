@@ -1,7 +1,7 @@
 import Link from 'next/link';
 // ...existing code...
 
-export default function DishCard({ dish, currency }) {
+export default function DishCard({ dish, currency, primeColor = '#FF9800' }) {
   console.log(dish);
   console.log('currency:', currency);
   return (
@@ -15,7 +15,7 @@ export default function DishCard({ dish, currency }) {
             alt={dish.name}
             width={96}
             height={96}
-            className="w-full sm:w-24 h-32 sm:h-24 object-cover rounded-lg"
+            className="w-auto max-w-full h-auto sm:w-32 sm:h-32 object-contain rounded-lg"
           />
         </div>
         {/* Content */}
@@ -32,7 +32,8 @@ export default function DishCard({ dish, currency }) {
             </span>
             <Link
               href={`/restaurant/${dish.restaurant_id}/dish/${dish.id}`}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border-none"
+              style={{ backgroundColor: primeColor }}
             >
               View in 3D
             </Link>

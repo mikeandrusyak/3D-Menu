@@ -15,6 +15,8 @@ export default function RestaurantMenu() {
   const [currency, setCurrency] = useState('');
   const [filters, setFilters] = useState([]); // список фільтрів
   const [selectedFilters, setSelectedFilters] = useState([]); // id вибраних фільтрів
+  const [primeColor, setPrimeColor] = useState('#FF9800');
+  const [secondColor, setSecondColor] = useState('#FFE0B2');
   const filterRefs = useRef({});
 
   useEffect(() => {
@@ -31,6 +33,8 @@ export default function RestaurantMenu() {
         setRestaurantName(rest.name);
         setRestaurantPhoto(rest.restaurant_photo);
         setCurrency(rest.currency);
+        setPrimeColor(rest.prime_color || '#FF9800');
+        setSecondColor(rest.second_color || '#FFE0B2');
         // 2. Get dishes by restaurant_id
         const dishesRes = await fetch(`/api/dishes?restaurant_id=${rest.id}`);
         if (!dishesRes.ok) throw new Error('Failed to fetch dishes');
@@ -70,10 +74,6 @@ export default function RestaurantMenu() {
         ? prev.filter(id => id !== filterId)
         : [...prev, filterId]
     );
-    // scrollIntoView для кнопки
-    if (filterRefs.current[filterId]) {
-      filterRefs.current[filterId].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
   };
 
   if (loading) {
@@ -125,12 +125,16 @@ export default function RestaurantMenu() {
                 <button
                   key={filter.id}
                   ref={el => filterRefs.current[filter.id] = el}
-                  className={`px-4 py-2 rounded-full border font-medium transition-colors text-sm whitespace-nowrap
+                  className={`px-4 py-2 rounded-xl border font-medium transition-colors text-sm whitespace-nowrap
                     ${selectedFilters.includes(filter.id)
-                      ? 'bg-orange-100 text-brand-orange border-brand-orange'
-                      : 'bg-white text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'}`}
+                      ? 'border-brand-orange'
+                      : 'bg-orange-100 text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'}`}
                   onClick={() => toggleFilter(filter.id)}
                   type="button"
+                  style={{
+                    backgroundColor: selectedFilters.includes(filter.id) ? primeColor : primeColor,
+                    color: selectedFilters.includes(filter.id) ? '#000' : '#fff',
+                  }}
                 >
                   {filter.name}
                 </button>
@@ -148,7 +152,7 @@ export default function RestaurantMenu() {
         ) : (
           <div className="space-y-4">
             {filteredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} currency={currency} />
+              <DishCard key={dish.id} dish={dish} currency={currency} primeColor={primeColor} />
             ))}
           </div>
         )}
