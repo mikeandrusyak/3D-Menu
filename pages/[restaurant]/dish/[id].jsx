@@ -158,4 +158,8 @@ export default function DishDetail() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  return { props: {} };
 } 
