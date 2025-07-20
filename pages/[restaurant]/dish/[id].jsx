@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../../../components/Layout';
+import Script from 'next/script';
 
 export default function DishDetail() {
   const router = useRouter();
@@ -9,6 +10,11 @@ export default function DishDetail() {
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -17,11 +23,9 @@ export default function DishDetail() {
       try {
         setLoading(true);
         const response = await fetch(`/api/dishes/${id}`);
-        
         if (!response.ok) {
           throw new Error('Failed to fetch dish');
         }
-        
         const data = await response.json();
         setDish(data);
       } catch (err) {
@@ -119,21 +123,30 @@ export default function DishDetail() {
           <h2 className="text-xl font-semibold text-gray-900 mb-4">3D View</h2>
           {dish.model_url ? (
             <div className="bg-gray-100 rounded-xl p-4">
-              <model-viewer
-                src={dish.model_url}
-                alt={`3D model of ${dish.name}`}
-                camera-controls
-                auto-rotate
-                style={{
-                  width: '100%',
-                  height: '300px',
-                  borderRadius: '0.75rem'
-                }}
-              >
-                <div className="text-center py-8">
-                  <p className="text-gray-500">Loading 3D model...</p>
-                </div>
-              </model-viewer>
+              <Script
+                src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+                strategy="beforeInteractive"
+              />
+              {isClient && (
+                <model-viewer
+                  src={dish.model_url}
+                  alt={`3D model of ${dish.name}`}
+                  ar
+                  ar-modes="webxr scene-viewer quick-look"
+                  camera-controls
+                  auto-rotate
+                  style={{
+                    width: '100%',
+                    height: '300px',
+                    borderRadius: '0.75rem'
+                  }}
+                  ios-src={dish.model_url}
+                >
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">Loading 3D model...</p>
+                  </div>
+                </model-viewer>
+              )}
             </div>
           ) : (
             <div className="bg-gray-100 rounded-xl p-8 text-center">

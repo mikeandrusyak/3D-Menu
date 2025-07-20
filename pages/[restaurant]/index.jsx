@@ -152,7 +152,7 @@ export default function RestaurantMenu() {
         ) : (
           <div className="space-y-4">
             {filteredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} currency={currency} primeColor={primeColor} />
+              <DishCard key={dish.id} dish={dish} currency={currency} primeColor={primeColor} restaurantSlug={restaurant} />
             ))}
           </div>
         )}

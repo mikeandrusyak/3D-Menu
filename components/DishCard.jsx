@@ -1,7 +1,7 @@
 import Link from 'next/link';
 // ...existing code...
 
-export default function DishCard({ dish, currency, primeColor = '#FF9800' }) {
+export default function DishCard({ dish, currency, primeColor = '#FF9800', restaurantSlug }) {
   console.log(dish);
   console.log('currency:', currency);
   return (
@@ -31,7 +31,7 @@ export default function DishCard({ dish, currency, primeColor = '#FF9800' }) {
               {dish.price.toFixed(2)} {currency ? currency : ''}
             </span>
             <Link
-              href={`/restaurant/${dish.restaurant_id}/dish/${dish.id}`}
+              href={`/${restaurantSlug}/dish/${dish.id}`}
               className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border-none"
               style={{ backgroundColor: primeColor }}
             >
