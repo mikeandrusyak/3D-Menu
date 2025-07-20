@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
+import Link from 'next/link';
 
 export default function DishDetail() {
   const router = useRouter();
@@ -44,6 +45,11 @@ export default function DishDetail() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+      <div className="absolute top-4 left-4">
+        <Link href={`/${router.query.restaurant || ''}`}>
+          <button className="bg-white text-black px-4 py-2 mt-4 ml-4 rounded shadow hover:bg-gray-200 transition">Menu</button>
+        </Link>
+      </div>
       <Script src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" strategy="beforeInteractive" />
       {isClient && dish.model_url ? (
         <>
