@@ -35,7 +35,7 @@ export default function DishCard({ dish, currency, primeColor = '#FF9800', resta
               className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border-none"
               style={{ backgroundColor: primeColor }}
             >
-              Переглянути в 3D
+              View in 3D
             </Link>
           </div>
         </div>

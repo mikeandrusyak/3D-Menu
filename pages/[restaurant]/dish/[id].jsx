@@ -39,8 +39,8 @@ export default function DishDetail() {
     return /Android/.test(navigator.userAgent);
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-screen text-gray-500">Завантаження...</div>;
-  if (error || !dish) return <div className="flex items-center justify-center min-h-screen text-red-500">Помилка: {error || 'Страва не знайдена'}</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen text-gray-500">Loading...</div>;
+  if (error || !dish) return <div className="flex items-center justify-center min-h-screen text-red-500">Error: {error || 'Dish not found'}</div>;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black">
@@ -61,38 +61,15 @@ export default function DishDetail() {
             interaction-prompt="none"
             poster=""
             background-color="transparent"
-            ios-src={dish.model_usdz_url || ''}
           >
-            <div className="text-center py-8">
-              <p className="text-gray-500">Завантаження 3D-моделі...</p>
-            </div>
           </model-viewer>
-          <div className="flex gap-2 mt-4">
-            {isIOS() && dish.model_usdz_url && (
-              <a
-                rel="ar"
-                href={dish.model_usdz_url}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium shadow transition"
-              >
-                Переглянути в AR (iOS)
-              </a>
-            )}
-            {isAndroid() && dish.model_url && (
-              <a
-                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(dish.model_url)}&mode=ar_preferred#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(dish.model_url)};end;`}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow transition"
-              >
-                Переглянути в AR (Android)
-              </a>
-            )}
-          </div>
           <div className="text-xs text-gray-400 mt-2 text-center">
-            Обертайте пальцем, використовуйте pinch для zoom<br/>
-            Для AR — натисніть відповідну кнопку
+            Rotate with your finger, use Pinch to zoom<br/>
+            For AR - click the right button
           </div>
         </>
       ) : (
-        <div className="text-gray-600 text-center p-8">3D-модель недоступна для цієї страви</div>
+        <div className="text-gray-600 text-center p-8">3D model is not available for this dish</div>
       )}
     </div>
   );
