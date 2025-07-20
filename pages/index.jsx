@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -11,7 +12,9 @@ export default function Home() {
             <Image src="/icons/logo.jpg" alt="AR Menu Logo" width={56} height={56} className="rounded-full" />
           </div>
           <div className="space-x-2">
-            <a href="#demo menu" className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Demo Menu</a>
+            <Link href="/demo-restaurant">
+              <button className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Demo Menu</button>
+            </Link>
             <a href="#contacts" className="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-4 py-2 font-medium transition">Contact</a>
           </div>
         </header>

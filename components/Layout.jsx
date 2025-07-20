@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Layout({ children }) {
   return (
@@ -14,7 +15,9 @@ export default function Layout({ children }) {
         </main>
         <footer className="bg-white border-t mt-auto">
           <div className="max-w-screen-sm mx-auto px-4 py-4 text-center">
-            <small className="text-gray-500">© 2025 3D-Menu</small>
+            <Link href="/">
+              <small className="text-gray-500 cursor-pointer hover:underline">© 2025 3D-Menu</small>
+            </Link>
           </div>
         </footer>
       </div>
