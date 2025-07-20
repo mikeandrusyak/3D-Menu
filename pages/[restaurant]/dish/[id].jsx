@@ -13,6 +13,16 @@ export default function DishDetail() {
 
   useEffect(() => { setIsClient(true); }, []);
 
+  // Додаємо useEffect для встановлення --vh
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+
   useEffect(() => {
     if (!id) return;
     const fetchDish = async () => {
@@ -44,7 +54,7 @@ export default function DishDetail() {
   if (error || !dish) return <div className="flex items-center justify-center min-h-screen text-red-500">Error: {error || 'Dish not found'}</div>;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+    <div className="flex flex-col items-center justify-center custom-vh bg-black">
       <div className="absolute top-4 left-4">
         <Link href={`/${router.query.restaurant || ''}`}>
           <button className="bg-white text-black px-4 py-2 mt-4 ml-4 rounded shadow hover:bg-gray-200 transition">Menu</button>
