@@ -67,7 +67,7 @@ export default function DishDetail() {
     <div className="flex flex-col items-center justify-center custom-vh bg-black">
       <div className="absolute top-4 left-4">
         <Link href={`/${router.query.restaurant || ''}`}>
-          <button className="bg-white text-black px-4 py-2 mt-4 ml-4 rounded shadow hover:bg-gray-200 transition">Menu</button>
+          <button className="bg-white text-black px-4 py-2 mt-3 ml-3 rounded shadow hover:bg-gray-200 transition">Menu</button>
         </Link>
       </div>
       {isClient && dish.model_url ? (
@@ -79,7 +79,7 @@ export default function DishDetail() {
             camera-controls
             auto-rotate
             touch-action="pan-y"
-            style={{ width: '100vw', maxWidth: 600, height: '70vh', background: 'transparent' }}
+            style={{ width: '100vw', maxWidth: 600, height: '70vh', background: 'transparent', marginTop: '70px'}}
             shadow-intensity="1"
             exposure="1"
             disable-zoom={false}
