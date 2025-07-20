@@ -108,18 +108,16 @@ export default function RestaurantMenu() {
 
   return (
     <Layout>
-      <div className="max-w-screen-sm mx-auto py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl text-center font-bold text-gray-900 m-2">{restaurantName || 'Restaurant Menu'}</h1>
-          {/* Hero Image */}
-          <div className="w-full h-auto overflow-hidden mb-4">
-            <Image src={restaurantPhoto || "/hero-restaurant.jpg"} alt="Restaurant photo" width={400} height={200} className="w-full object-cover" />
-          </div>
+      <div className="max-w-screen-sm mx-auto">
+        <h1 className="text-3xl text-center font-bold text-gray-900 m-2">{restaurantName || 'Restaurant Menu'}</h1>
+        {/* Hero Image */}
+        <div className="w-full h-auto overflow-hidden">
+          <Image src={restaurantPhoto || "/hero-restaurant.jpg"} alt="Restaurant photo" width={400} height={200} className="w-full object-cover" />
         </div>
 
         {/* UI фільтрів */}
         {filters.length > 0 && (
-          <div className="sticky top-0 z-10 bg-white shadow-sm mb-6 -mx-4 px-4">
+          <div className="sticky top-0 z-10 bg-white shadow-sm -mx-2 px-4">
             <div className="flex gap-2 overflow-x-auto scrollbar-none py-2 whitespace-nowrap">
               {filters.map(filter => (
                 <button
@@ -132,8 +130,8 @@ export default function RestaurantMenu() {
                   onClick={() => toggleFilter(filter.id)}
                   type="button"
                   style={{
-                    backgroundColor: selectedFilters.includes(filter.id) ? primeColor : primeColor,
-                    color: selectedFilters.includes(filter.id) ? '#000' : '#fff',
+                    backgroundColor: selectedFilters.includes(filter.id) ? primeColor : secondColor,
+                    color: selectedFilters.includes(filter.id) ? '#000' : '#000',
                   }}
                 >
                   {filter.name}
