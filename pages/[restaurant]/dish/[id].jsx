@@ -41,6 +41,16 @@ export default function DishDetail() {
     fetchDish();
   }, [id]);
 
+  useEffect(() => {
+    // Додаємо скрипт model-viewer лише на клієнті, якщо його ще немає
+    if (typeof window !== 'undefined' && !document.querySelector('script[src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"]')) {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js';
+      document.body.appendChild(script);
+    }
+  }, []);
+
   const isIOS = () => {
     if (typeof window === 'undefined') return false;
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -60,7 +70,6 @@ export default function DishDetail() {
           <button className="bg-white text-black px-4 py-2 mt-4 ml-4 rounded shadow hover:bg-gray-200 transition">Menu</button>
         </Link>
       </div>
-      <Script src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" strategy="beforeInteractive" />
       {isClient && dish.model_url ? (
         <>
           <model-viewer
